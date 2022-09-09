@@ -11,11 +11,19 @@ app.listen(process.env.PORT || 3000)
 
 app.use(express.json())
 
+// const con = mysql.createConnection({
+//     host: 'db4free.net',
+//     user: 'inkr2022',
+//     password: 'C6eVaeGGhAHD_v#',
+//     database: 'eshop2'
+// })
+
+
 const con = mysql.createConnection({
-    host: 'db4free.net',
-    user: 'inkr2022',
-    password: 'C6eVaeGGhAHD_v#',
-    database: 'eshop2'
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'eshop'
 })
 
 
@@ -29,7 +37,7 @@ con.connect((err)=>{
 })
 
 
-app.get('/api/get', (req, res)=>{
+app.get('/api/chaussures/all', (req, res)=>{
     
     con.query('SELECT * FROM chaussures',(err,result)=>{
         if(err) res.status(500).send(err)
@@ -39,9 +47,26 @@ app.get('/api/get', (req, res)=>{
 })
 
 
-app.get('/api/get/:id', (req, res)=>{
+app.get('/api/chaussures/:id', (req, res)=>{
     
-    con.query('SELECT * FROM chaussures WHERE idxChaussure=?',[req.params.idxChaussure],(err,result)=>{
+    con.query('SELECT * FROM chaussures WHERE idxChaussure=?',[req.params.id],(err,result)=>{
+        if(err) res.status(500).send(err)
+            
+        res.status(200).json(result)
+    })
+})
+
+
+app.put('/api/chaussures/update/:id', (req, res)=>{
+    const idxMarque = req.body.idxMarque;
+    const taille = req.body.taille;
+    const couleur = req.body.couleur;
+    const prix = req.body.prix;
+    const nomChaussure = req.body.nomChaussure; 
+    const images = req.body.images; 
+    const idxChaussure = req.params.id;
+    
+    con.query('UPDATE chaussures SET idxMarque=?, taille=?, couleur=?, prix=?, nomChaussure=?, images=? WHERE idxChaussure=?',[idxMarque,taille,couleur,prix,nomChaussure,images,idxChaussure],(err,result)=>{
         if(err) res.status(500).send(err)
         
         res.status(200).json(result)
@@ -49,7 +74,17 @@ app.get('/api/get/:id', (req, res)=>{
 })
 
 
-app.post('/api/post', (req, res)=>{
+app.delete('/api/chaussures/delete/:id', (req, res)=>{
+    
+    con.query('DELETE FROM chaussures WHERE idxChaussure=?',[req.params.id],(err,result)=>{
+        if(err) res.status(500).send(err)
+            
+        res.status(200).json(result)
+    })
+})
+
+
+app.post('/api/chaussures/add', (req, res)=>{
     const idxMarque = req.body.idxMarque;
     const taille = req.body.taille;
     const couleur = req.body.couleur;
