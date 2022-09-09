@@ -11,20 +11,13 @@ app.listen(process.env.PORT || 3000)
 
 app.use(express.json())
 
-// const con = mysql.createConnection({
-//     host: 'db4free.net',
-//     user: 'inkr2022',
-//     password: 'C6eVaeGGhAHD_v#',
-//     database: 'eshop2'
-// })
-
-
 const con = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'eshop'
+    host: 'db4free.net',
+    user: 'inkr2022',
+    password: 'C6eVaeGGhAHD_v#',
+    database: 'eshop2'
 })
+
 
 
 con.connect((err)=>{
